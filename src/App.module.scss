@@ -1,0 +1,240 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+$front-color: #3d405b;//#000000;
+$back-color: #81b29a;//#14213d;
+$content-color: #f4f1de;// #e5e5e5;
+$content-color-font: black;
+$side-size: 84px;
+
+
+.container {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    font-family: "Open Sans", arial;
+    position: absolute;
+    overflow-y: scroll;
+}
+
+.side {
+    
+    font-size: 0.75em;
+    //padding-top: 25px;
+    width: $side-size;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    font-weight: 200;
+    position: fixed;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    z-index: 99;
+
+    ul, li {
+      list-style-type: none;
+      outline: 0;
+      margin: 0;
+      padding: 0;
+      //text-transform: uppercase;
+    
+    }
+    span {
+      padding-left: 16px;
+    }
+
+    a {
+      color: white;
+    }
+
+    li {
+      height: 50px;
+      line-height: 50px;
+    }
+
+    
+}
+
+.sideColor {
+  background: $front-color;
+  color: $content-color;
+
+  li:hover {
+    background: $content-color;
+    > a , hr{
+      color: $front-color;
+   
+    }
+  }
+}
+
+.sideColorOne {
+  background: #d90429;
+  color: #edf2f4;
+  a {
+    color: white;
+  }
+
+  li:hover {
+    background: #edf2f4;
+    > a , hr{
+      color: #d90429;
+   
+    }
+  }
+}
+
+.sideColorTwo {
+  color: #e5e5e5;
+  background: #000000;
+
+  li:hover {
+    background: #e5e5e5;
+    > a , hr{
+      color: #fca311;
+   
+    }
+  }
+}
+
+.sideColorThree {
+  background: #495057;
+
+  li:hover {
+    background: black;
+    > a , hr{
+      color: white;
+   
+    }
+  }
+}
+
+.content {
+  overflow-y: scroll;
+  height: 100%;
+  widtH: 100%;
+  position: fixed;
+}
+
+.contentColor {
+  background: $back-color;
+}
+
+.contentColorOne {
+  background: #14213d;
+}
+
+.contentColorTwo {
+  background: #fca311;
+}
+
+.contentColorThree {
+  background: #212529;
+}
+
+.card {
+    //animation: .35s ;
+    transition: left .35s cubic-bezier(.07,.65,.36,.92);//, opacity .6s ease-in-out, scale .6s ease-in;
+    opacity: 1;
+    //overflow: scroll;
+    color: $content-color-font;
+    position: relative;
+    width: calc(95% - 84px);
+    //right: 0px;
+    left: calc(2.5% + 84px);
+    top: calc(2vh);
+    margin: 0;
+    border: 0;
+    //bottom: 0;
+    padding: 40px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    font-family: 'Montserrat', sans-serif;
+    h2, h3, h4, h5 {
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+}
+
+.up {
+    left: calc(-100% + 84px);
+    //opacity: 0;
+    //transform: scale(1.08, 1.08);
+}
+
+.cardColor {
+  background: $content-color;
+}
+
+.cardColorOne {
+  background: #e5e5e5;
+}
+
+.cardColorTwo {
+  background: #e5e5e5;
+}
+
+.cardColorThree {
+  color: white;
+  background: #343a40;
+}
+
+.cardText {
+  //width: 50%;
+  //float: left;
+  padding-top: 10px;
+  padding-right: 30px;
+  padding-left: 30px;
+}
+
+.cardImage {
+  //width: 50%;
+  //float: right;
+  padding-top: calc(5%);
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  img {
+    //display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 500px;
+    top: calc(5%);
+  }
+}
