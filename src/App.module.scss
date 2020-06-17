@@ -223,6 +223,15 @@ $side-size: 84px;
   padding-left: 30px;
 }
 
+.resultTable { 
+  th {
+    background: black;
+  }
+  td {
+    background: transparent; 
+  }
+}
+
 .cardImage {
   //width: 50%;
   //float: right;
