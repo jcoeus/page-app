@@ -6,7 +6,7 @@ import { Grid, GridContainer, Cell, Stack } from 'react-foundation'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope, faSwatchbook } from '@fortawesome/free-solid-svg-icons'
 import { faTwitter, faGithub } from '@fortawesome/free-brands-svg-icons'
-import { MathJax } from 'react-mathjax'
+import MathJax from 'react-mathjax'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
@@ -248,7 +248,7 @@ const ProjectCard = props => {
                 </Grid>
             </div>
         </div>
-    );
+    )
 };
 
 const ResearchCard = props => (
@@ -270,34 +270,8 @@ const ResearchCard = props => (
                         <span>
                             <h5>
                                 Text Summarization with Modern Word Embeddings and Pointer-Generator Networks
-                            </h5>
-                            <p>
-                            </p>
-                            <table className={classNames(Stack, styles.resultTable)}>
-                                <thead>
-                                    <tr>
-                                        <th>Article</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Some Text</td>
-                                    </tr>
-                                </tbody>
-
-                            </table>
-   
-                        </span>
-                        <span>
-                            <h5>
-                                Deep Learning Resource Analysis Using Memory-Efficient Adaptive Optimization
-                            </h5>
-                            <p>
-                                
-                            </p>
-                            <p>
-                                
-                            </p>
+                            </h5>                            
+                        <h5> Deep Learning Resource Analysis Using Memory-Efficient Adaptive Optimization</h5>
                             <MathJax.Provider input="tex">
                                 <div>
                                     <b><u>SM3-II Algorithm</u></b>
@@ -325,7 +299,6 @@ const ResearchCard = props => (
                                     10: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<MathJax.Node inline formula={'\\mu\'_t(r) \\leftarrow \\max\\{\\mu\'_t(r),\\nu\'_t(i)\\}'}/>
                                 </div>
                             </MathJax.Provider>
-
                         </span>
                     </div>
                 </Cell>
@@ -334,8 +307,6 @@ const ResearchCard = props => (
     </div>
 );
 
-const TextSummaryTable = props => {
 
-}
 
 export default App;
