@@ -83,25 +83,60 @@ $side-size: 84px;
 
     a {
       color: white;
+      text-align: center;
     }
 
     li {
       height: 50px;
       line-height: 50px;
     }
+}
 
-    
+.top {
+  font-size: 0.75em;
+  display: none;
+  //height: 50px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  ul, li {
+    list-style-type: none;
+    //outline: 0;
+    margin: 0;
+    padding: 0;
+    float: left;
+    //text-transform: uppercase;
+  }
+  span {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+  a {
+    color: white;
+  }
+  li {
+    height: 50px;
+    line-height: 50px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .side {
+    display: none;
+  }
+  .top {
+    display: block;
+  }
 }
 
 .sideColor {
-  background: $front-color;
-  color: $content-color;
-
+  background: #495057;
   li:hover {
-    background: $content-color;
+    background: black;
     > a , hr{
-      color: $front-color;
-   
+      color: white;
     }
   }
 }
@@ -112,12 +147,10 @@ $side-size: 84px;
   a {
     color: white;
   }
-
   li:hover {
     background: #edf2f4;
     > a , hr{
       color: #d90429;
-   
     }
   }
 }
@@ -125,24 +158,21 @@ $side-size: 84px;
 .sideColorTwo {
   color: #e5e5e5;
   background: #000000;
-
   li:hover {
     background: #e5e5e5;
     > a , hr{
       color: #fca311;
-   
     }
   }
 }
 
 .sideColorThree {
-  background: #495057;
-
+  background: $front-color;
+  color: $content-color;
   li:hover {
-    background: black;
+    background: $content-color;
     > a , hr{
-      color: white;
-   
+      color: $front-color;
     }
   }
 }
@@ -155,7 +185,8 @@ $side-size: 84px;
 }
 
 .contentColor {
-  background: $back-color;
+  background: #212529;
+  
 }
 
 .contentColorOne {
@@ -167,7 +198,7 @@ $side-size: 84px;
 }
 
 .contentColorThree {
-  background: #212529;
+  background: $back-color;
 }
 
 .card {
@@ -177,10 +208,10 @@ $side-size: 84px;
     //overflow: scroll;
     color: $content-color-font;
     position: relative;
-    width: calc(95% - 84px);
+    width: calc(97% - 84px);
     //right: 0px;
-    left: calc(2.5% + 84px);
-    top: calc(2vh);
+    left: calc(1.5% + 84px);
+    top: calc(3vh);
     margin: 0;
     border: 0;
     //bottom: 0;
@@ -192,6 +223,22 @@ $side-size: 84px;
     }
 }
 
+@media screen and (max-width: 768px) {
+  .card {
+    width: calc(100%);
+    left: calc(0%);
+    top: calc(3vh);
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .card {
+    width: calc(1000px - 84px);
+    left: calc((100% - 1000px)/2 + 84px);
+    top: calc(3vh);
+  }
+}
+
 .up {
     left: calc(-100% + 84px);
     //opacity: 0;
@@ -199,7 +246,8 @@ $side-size: 84px;
 }
 
 .cardColor {
-  background: $content-color;
+  color: white;
+  background: #343a40;
 }
 
 .cardColorOne {
@@ -211,8 +259,7 @@ $side-size: 84px;
 }
 
 .cardColorThree {
-  color: white;
-  background: #343a40;
+  background: $content-color;
 }
 
 .cardText {
@@ -223,22 +270,48 @@ $side-size: 84px;
   padding-left: 30px;
 }
 
+@media screen and (max-width: 639px) {
+  .card {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .cardText {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+}
+
 .resultTable { 
+  font-size: 13px;
   th {
-    background: black;
+    color: white;
+    background: #343a40;
   }
   td {
-    background: transparent; 
+    color: white;
+    background: #343a40; 
   }
+}
+
+pre {
+  font-size: 11px;
+}
+
+.codeHigh {
+  text-align: center;
 }
 
 .cardImage {
   //width: 50%;
   //float: right;
-  padding-top: calc(5%);
+  //padding-top: calc(5%);
   margin-left: auto;
   margin-right: auto;
   text-align: center;
+  border-radius: 50%;
+  border: 2px solid #81b29a;
+  display: block;
+  box-sizing: border-box;
   img {
     //display: block;
     margin-left: auto;
