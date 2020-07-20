@@ -64,12 +64,13 @@ $side-size: 84px;
     height: 100%;
     top: 0;
     bottom: 0;
-    font-weight: 200;
+    font-weight: 300;
     position: fixed;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     z-index: 99;
 
     ul, li {
+      transition: all .35s cubic-bezier(.07,.65,.36,.92);
       list-style-type: none;
       outline: 0;
       margin: 0;
@@ -135,6 +136,10 @@ $side-size: 84px;
   background: #495057;
   li:hover {
     background: black;
+    //width: calc(100% + 10px);
+    //transform: translateX(10px);
+    //margin-left: -10px;
+    //padding-left: 10px;
     > a , hr{
       color: white;
     }
@@ -149,6 +154,10 @@ $side-size: 84px;
   }
   li:hover {
     background: #edf2f4;
+    //width: calc(100% + 10px);
+    //transform: translateX(10px);
+    //margin-left: -10px;
+    //padding-left: 10px;
     > a , hr{
       color: #d90429;
     }
@@ -160,6 +169,10 @@ $side-size: 84px;
   background: #000000;
   li:hover {
     background: #e5e5e5;
+    width: calc(100% + 10px);
+    transform: translateX(10px);
+    margin-left: -10px;
+    padding-left: 10px;
     > a , hr{
       color: #fca311;
     }
@@ -171,6 +184,10 @@ $side-size: 84px;
   color: $content-color;
   li:hover {
     background: $content-color;
+    width: calc(100% + 10px);
+    transform: translateX(10px);
+    margin-left: -10px;
+    padding-left: 10px;
     > a , hr{
       color: $front-color;
     }
@@ -180,13 +197,12 @@ $side-size: 84px;
 .content {
   overflow-y: scroll;
   height: 100%;
-  widtH: 100%;
+  width: 100%;
   position: fixed;
 }
 
 .contentColor {
   background: #212529;
-  
 }
 
 .contentColorOne {
@@ -203,7 +219,8 @@ $side-size: 84px;
 
 .card {
     //animation: .35s ;
-    transition: left .35s cubic-bezier(.07,.65,.36,.92);//, opacity .6s ease-in-out, scale .6s ease-in;
+    border-radius: 20px;
+    transition: all .35s cubic-bezier(.07,.65,.36,.92);//, opacity .6s ease-in-out, scale .6s ease-in;
     opacity: 1;
     //overflow: scroll;
     color: $content-color-font;
@@ -211,23 +228,30 @@ $side-size: 84px;
     width: calc(97% - 84px);
     //right: 0px;
     left: calc(1.5% + 84px);
-    top: calc(3vh);
+    top: calc(65px);
     margin: 0;
     border: 0;
     //bottom: 0;
     padding: 40px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    
     font-family: 'Montserrat', sans-serif;
-    h2, h3, h4, h5 {
+    h2, h3, h4, h5, h6 {
       font-family: 'Noto Sans JP', sans-serif;
     }
+}
+
+.card:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 @media screen and (max-width: 768px) {
   .card {
     width: calc(100%);
     left: calc(0%);
-    top: calc(3vh);
+    top: calc(40px);
+  }
+  .path {
+    display: none;
   }
 }
 
@@ -235,7 +259,7 @@ $side-size: 84px;
   .card {
     width: calc(1000px - 84px);
     left: calc((100% - 1000px)/2 + 84px);
-    top: calc(3vh);
+    top: calc(65px);
   }
 }
 
@@ -283,6 +307,7 @@ $side-size: 84px;
 
 .resultTable { 
   font-size: 13px;
+
   th {
     color: white;
     background: #343a40;
@@ -318,5 +343,65 @@ pre {
     margin-right: auto;
     width: 500px;
     top: calc(5%);
+  }
+}
+
+.subCard {
+  border-radius: 25px;
+  padding: 10px;
+  margin: 10px;
+  background-color: #30475e;
+  transition: all .35s cubic-bezier(.07,.65,.36,.92);
+  .subCardTitle {
+    font-size: 0.8em;
+    padding-top: 10px;
+  }
+  span {
+    padding: 10px;
+    
+    h4, h5, h6, p {
+      padding: 10px;
+    }
+  }
+
+  .subCardGo {
+    float: right;
+    font-size: 1em;
+    padding-top: 0px;
+    padding-bottom: 10px;
+    a {
+      color: yellow;
+    }
+    a:hover {
+      color: blue;
+    }
+  }
+
+}
+.subCard:hover {
+  background-color: #30478e;
+  transform: translateY(-10px)
+}
+
+.path {
+  color: yellow;
+  padding-top: 20px;
+  padding-left: 110px;
+  height: 60px;
+  font-size: 0.5em;
+  position: fixed;
+  z-index: 2;
+  background: #212529;
+  border-bottom-right-radius: 20px;
+  a {
+    padding: 10px; 
+    color: yellow;
+    transition: all .35s cubic-bezier(.07,.65,.36,.92);
+  }
+  a:hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background-color: #3d405b;
+    border-radius: 10px;
+   
   }
 }

@@ -1,15 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './App.module.scss'
-//import * as Comp from './components/Top.js'
 import classNames from 'classnames';
 import { Grid, Cell } from 'react-foundation'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEnvelope, faSwatchbook } from '@fortawesome/free-solid-svg-icons'
+import { faEnvelope, faSwatchbook, faCode, faScroll, faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import { faTwitter, faGithub } from '@fortawesome/free-brands-svg-icons'
 import MathJax from 'react-mathjax'
 import { PrismAsyncLight as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
-//import 'foundation-sites/dist/css/foundation.min.css';
 
 const App = () => {
     const menu = [
@@ -42,9 +40,10 @@ const App = () => {
         if (fromCard !== toCard) {
             setAnimate(!animate);
             setTimeout(() => {
+                setCurCard("Blank");
                 setCurCard(toCard);
                 setAnimate(animate);
-            }, 350);
+            }, 100);
         }
     };
 
@@ -58,7 +57,7 @@ const App = () => {
                                         colorN === 1 && styles.contentColorOne,
                                         colorN === 2 && styles.contentColorTwo,
                                         colorN === 3 && styles.contentColorThree)}>
-                    <Card curCard={curCard} colorN={colorN} animate={animate}/>
+                    <Card curCard={curCard} colorN={colorN} animate={animate} onCardChange={handleCardSwitch}/>
                 </div>
             </div>
         </div>
@@ -78,12 +77,11 @@ const Top = props => {
 <a>
     <span style={{paddingLeft: "17px"}}>
         <FontAwesomeIcon icon={faSwatchbook}/>
-
     </span>
 </a>
 </li>
 {props.info.map(item => (
-<li key={item.name} onClick={() => props.onCardChange(props.curCard, item.name)}>
+<li key={item.name} onClick={() => props.onCardChange("", item.name)}>
 <a>
     <span>
         {item.name}
@@ -99,10 +97,6 @@ const Top = props => {
 };
 
 const Side = props => {
-
-    const handleCardSwitch = (cur) => {
-        console.log("handleCardSwitch");
-    };
 
     return (
         <nav className={classNames(styles.side, 
@@ -121,7 +115,7 @@ const Side = props => {
                         </a>
                     </li>
                     {props.info.map(item => (
-                    <li key={item.name} onClick={() => props.onCardChange(props.curCard, item.name)}>
+                    <li key={item.name} onClick={() => props.onCardChange("", item.name)}>
                         <a>
                             <span>
                                 {item.name}
@@ -161,71 +155,54 @@ const Side = props => {
     )
 };
 
-const Card = props => {
+const Path = props => {
+
+    const size = GetWinSize();
+    var maxlen = 0.21 * (size.width) - 120;
+    var curPath = [...props.path];
     
-    if (props.curCard === 'Intro') {
-        return (
-            <IntroCard colorN={props.colorN} animate={props.animate}/>
-        )
+    return (
+        <div className={styles.path}>
+            <span>
+            <h6>
+                    <a>jcs &nbsp; /</a>{props.path.map(item => (
+                        
+                        <a onClick={() => props.switch(item)}> 
+                            {item.length > maxlen ? item.substring(0,maxlen) + "..." : item} &nbsp; /
+                        </a>
+                        
+                    ))}
+                </h6>
+            </span>
+        </div>
+
+    )
+}
+
+const Card = props => {
+
+    switch (props.curCard) {
+        case 'Intro':
+            return (
+                <IntroCard colorN={props.colorN} animate={props.animate} switch={props.onCardChange}/>
+            )
+        case 'Projects':
+            return (
+                <ProjectCard colorN={props.colorN} animate={props.animate} switch={props.onCardChange}/>
+            )
+        case 'Research':
+            return (
+                <ResearchCard colorN={props.colorN} animate={props.animate} switch={props.onCardChange}/>
+            )
+        case 'Blank':
+            return (
+                <div></div>
+            )
     }
-    else if (props.curCard  === 'Projects') {
-        return (
-            <ProjectCard colorN={props.colorN} animate={props.animate}/>
-        )
-    }
-    else if (props.curCard === 'Research') {
-        return (
-            <ResearchCard colorN={props.colorN} animate={props.animate}/>
-        )
-    }
+    
 };
 
-const IntroCard = props => (
-    <div className={classNames(styles.content,         
-                                props.colorN === 0 && styles.contentColor,
-                                props.colorN === 1 && styles.contentColorOne,
-                                props.colorN === 2 && styles.contentColorTwo,
-                                props.colorN === 3 && styles.contentColorThree)}>
-        <div className={classNames(props.colorN === 0 && styles.cardColor, 
-                                    props.colorN === 1 && styles.cardColorOne,  
-                                    props.colorN === 2 && styles.cardColorTwo,
-                                    props.colorN === 3 && styles.cardColorThree,
-                                    styles.card, props.animate && styles.up)}>
-            <h2>Hi</h2>
-            <hr />
-            <Grid gridMarginX>
-                <Cell small={12} medium={3} large={3} xlarge={3}>
-                    <div className={styles.cardImage}>
-                        <img className ={styles.cardImage}src="https://i.gifer.com/NYRT.gif" alt="intro" ></img>
-                    </div>
-                </Cell>
-                <Cell small={12} medium={9} large={9} xlarge={9}>
-                    <div className={styles.cardText}>
-                        <span>
-                            <p>
-                                My name is Jaime (pronounced like xai-meh). I work with machines, and sometimes machines work with me too. 
-                                If time and GPU permits, I occasionally work on NLP/U and Deep Learning research. Though not particularly 
-                                good at it, I also enjoy writing and generative art.
-                            </p>
-                            <p>
-                                I graduated Columbia University where I studied CS and lots of math. During my time there, I helped build a 
-                                bridge and a water well for an underserved community in Morocco. I also helped kickstart the Medical Informatics 
-                                Society where I hosted machine learning lectures.
-                            </p>
-                            <p>
-                                If you'd like to collaborate on a project, please feel free to reach out. <span>😀</span>
-                            </p>
-        
-                        </span>
-                    </div>
-                </Cell>
-            </Grid>
-        </div>
-    </div>
-);
-
-const ProjectCard = props => {
-
+const CardBody = props => {
     const livenessFormula = `
     \\textrm{IN}_n = \\textrm{USE}_n \\cup (\\textrm{OUT}_n - \\textrm{DEF}_n)\\\\
     \\textrm{OUT}_n = \\bigcup_{s \\in {SUCCESSORS}_n} \\textrm{IN}_S
@@ -360,64 +337,6 @@ const ProjectCard = props => {
         }
     `;
 
-    return (
-        <div className={classNames(styles.content,         
-                                    props.colorN === 0 && styles.contentColor,
-                                    props.colorN === 1 && styles.contentColorOne,
-                                    props.colorN === 2 && styles.contentColorTwo,
-                                    props.colorN === 3 && styles.contentColorThree)}>
-            <div className={classNames(props.colorN === 0 && styles.cardColor, 
-                                        props.colorN === 1 && styles.cardColorOne,  
-                                        props.colorN === 2 && styles.cardColorTwo,
-                                        props.colorN === 3 && styles.cardColorThree,
-                                        styles.card, props.animate && styles.up)}>
-                <h2>Projects</h2>
-                <hr />
-                <Grid>
-                    <Cell small={12} medium={12} large={12} xlarge={12}>
-                        <div className={styles.cardText}>
-                            <span>
-                                <h5>
-                                    Columbia Engineering Outreach Program Database
-                                </h5>
-                            </span>
-                        </div>
-                    </Cell>
-                    <Cell small={12} medium={12} large={12} xlarge={12}>
-                        <div className={styles.cardText}>
-                            <span>
-                                <h5>
-                                    Compiler Module for Dead Code Elimination
-                                    
-                                </h5>
-                            </span>
-                            <div nameClass={styles.codeHigh}>
-                                <MathJax.Provider  input="tex">
-                                    <MathJax.Node formula={livenessFormula}/>
-                                </MathJax.Provider>
-                                <SyntaxHighlighter language="cpp" style={atomDark}>
-                                    {liveSetsStructCode}
-                                </SyntaxHighlighter>
-                                <SyntaxHighlighter language="cpp" style={atomDark}>
-                                    {vsUnionCode}
-                                </SyntaxHighlighter>
-                                <SyntaxHighlighter language="cpp" style={atomDark}>
-                                    {vsSubstCode}
-                                </SyntaxHighlighter>
-                                <SyntaxHighlighter language="cpp" style={atomDark}>
-                                    {getSetsCode}
-                                </SyntaxHighlighter>
-                            </div>
-                        </div>
-                    </Cell>
-                </Grid>
-            </div>
-        </div>
-    )
-};
-
-const ResearchCard = props => {
-
     const textSummaryContentOne = [
         {
             key: 'Article',
@@ -472,104 +391,345 @@ const ResearchCard = props => {
         }
     ];
 
+    if (props.content === "Compiler Module for Dead Code Elimination") {
+        
+        return (
+            <div className={styles.cardText}>
+                <div nameClass={styles.codeHigh}>
+                    <MathJax.Provider  input="tex">
+                        <MathJax.Node formula={livenessFormula}/>
+                    </MathJax.Provider>
+                    <SyntaxHighlighter language="cpp" style={atomDark}>
+                        {liveSetsStructCode}
+                    </SyntaxHighlighter>
+                    <SyntaxHighlighter language="cpp" style={atomDark}>
+                        {vsUnionCode}
+                    </SyntaxHighlighter>
+                    <SyntaxHighlighter language="cpp" style={atomDark}>
+                        {vsSubstCode}
+                    </SyntaxHighlighter>
+                    <SyntaxHighlighter language="cpp" style={atomDark}>
+                        {getSetsCode}
+                    </SyntaxHighlighter>
+                </div>
+                <br/>
+                <br/>
+                <hr/>
+                <hr/>
+            </div>
+        )
+    }
+    else if (props.content === "Text Summarization with Modern Word Embeddings and Pointer-Generator Networks") {
+        return (
+            <div >
+                <span>
+                    with Andres Talero and Abdullah Siddique
+                    <hr/>
+                    <h6>
+                        Abstract
+                    </h6>
+                    <p>
+                        We conduct a performance overview of novel word embedding developments over the past two decades. We apply transfer learning to a text summarization neural network by administering different word embedding types to the network, which uses a combination of extractive and abstractive methods. We describe the differences in training and implementation for different word embedding types and produce a quantitative and qualitative analysis that compares the results produced by each one.
+                    </p>
+                    <hr/>
+                    <h6>
+                        Results
+                    </h6>
+                    <p>
+                        Sample Summaries
+                    </p>
+                    
+                    <TextSummary content={textSummaryContentOne}/>
+                    <TextSummary content={textSummaryContentTwo}/>   
+                    <hr/>
+                </span>
+                <br/>
+                <br/>
+                <hr/>
+                <hr/>
+            </div>
+        )
+    }
+
+    else if (props.content === "Deep Learning Resource Analysis Using Memory-Efficient Adaptive Optimization") {
+        return (
+            <div>
+                <span>                         
+                 with Rahul Das and Zhixiang Hu
+                <hr/>
+                <h6>
+                    Abstract
+                </h6>
+                <p>
+                The use of adaptive gradient-based optimizers is widespread in machine learning, the most popular of which are Adam, Adagrad, and Adafactor. These optimizers utilize cumulative second-order statistics to tune the learning rate of each parameter during the optimization process, presenting numerous advantages, most importantly, constraining the time and space requirements of the methods to be linear in the number of parameters.
+However, the existing optimizers still present significant memory overhead when training models with billions of parameters. This places a limitation on the size of the model and on the batch size during training, which can severely effect the accuracy of the model. By improving on the memory overhead of existing optimizers, we can train ever more complex and accurate models, which is especially pertinent to the field of natural language processing. Anil et al. [2] present a novel adaptive optimization method which retains the benefits of conventional per-parameter adaptivity while significantly reducing memory requirements.
+                </p>
+                <hr/>
+                <h6>
+                    Background
+                </h6>
+                    <MathJax.Provider input="tex">
+                        <div>
+                            <b><u>SM3-II Algorithm</u></b>
+                            <br/>
+                            1: <b>parameters:</b> learning rate <MathJax.Node inline formula={'\\eta'}/>
+                            <br/>
+                            2: initialize <MathJax.Node inline formula={'w_1 = 0 ; \\forall r \\in [k] : \\mu\'_0(r) = 0'}/>
+                            <br/>
+                            3: <b>for</b> <MathJax.Node inline formula={'t = 1, \\cdots, T'}/> <b>do</b>
+                            <br/>
+                            4: &nbsp;&nbsp;&nbsp;&nbsp;receive gradient <MathJax.Node inline formula={'g_t = \\nabla \\ell_t(w_t)'}/>
+                            <br/>
+                            5: &nbsp;&nbsp;&nbsp;&nbsp;initialize <MathJax.Node inline formula={'\\forall r \\in [k] : \\mu\'_t(r) = 0'}/>
+                            <br/>
+                            6: &nbsp;&nbsp;&nbsp;&nbsp;<b>for</b> <MathJax.Node inline formula={'i=1,\\cdots,d'}/> <b>do</b>
+                            <br/>
+                            7: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<MathJax.Node inline formula={'\\nu\'_t(i) \\leftarrow \\min_{r:S_r\\ni i}\\mu\'_{t-1}(r) + g_t^2(i)'}/>
+                            <br/>
+                            8: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<MathJax.Node inline formula={'w\'_{t+1}(i) \\leftarrow w_t(i) - \\eta g_t(i) / \\sqrt{\\nu\'_t(i)}'}/>
+                            <br/>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<MathJax.Node inline formula={'\\triangleright'}/> with the convention that <MathJax.Node inline formula={'0/0 = 0'}/>
+                            <br />
+                            9: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>for</b> all <MathJax.Node inline formula={'r: S_r \\ni i'}/> <b>do</b>
+                            <br/>
+                            10: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<MathJax.Node inline formula={'\\mu\'_t(r) \\leftarrow \\max\\{\\mu\'_t(r),\\nu\'_t(i)\\}'}/>
+                        </div>
+                    </MathJax.Provider>
+                <hr/>
+                <h6>
+                    Results
+                </h6>
+                </span>
+            </div>
+        )
+    }
+    else if (props.content === "Projects") {
+
+        const projects = [
+            {
+                title: "Columbia Engineering Outreach Program Database",
+                summary: "Some description",
+            },
+            {
+                title: "Compiler Module for Dead Code Elimination",
+                summary: "Some other description",
+            }
+        ]
+        return (
+            <Cell small={12} medium={6} large={6} xlarge={6} >
+                {projects.map(item => (
+                    <SubCard type={"P"} icon={faCode} summary={item.summary}
+                        title={item.title} action={() => props.switch(item.title)}/>
+                ))}
+            </Cell>
+          
+        )
+
+    }
+    else if (props.content === "Research") {
+
+        return (
+            <div>
+                <Cell small={12} medium={6} large={6} xlarge={6}>
+                    <SubCard type={"R"} icon={faScroll} title={"Text Summarization with Modern Word Embeddings and Pointer-Generator Networks"} action={() => props.switch("Text Summarization with Modern Word Embeddings and Pointer-Generator Networks")}/>
+                </Cell>
+                <Cell small={12} medium={6} large={6} xlarge={6}>
+                    <SubCard type={"R"} icon={faScroll} title={"Deep Learning Resource Analysis Using Memory-Efficient Adaptive Optimization"} action={() => props.switch("Deep Learning Resource Analysis Using Memory-Efficient Adaptive Optimization")}/>
+                </Cell>
+            </div>
+        )
+    }
+    else {
+        return (
+            <div></div>
+        )
+    }
+
+}
+
+const SubCard = props => {
+
+    let scType;
+
+    if (props.type === "P") {
+        scType = "PROJECT";
+    }
+    else if (props.type === "R") {
+        scType = "RESEARCH";
+    }
+
+    return (
+        <div className={styles.subCard}>
+            <div className={styles.subCardTitle}>
+                <span>
+                    <FontAwesomeIcon icon={props.icon} /> &nbsp; {scType}
+                </span>
+            </div>
+            <span>
+                <h5>
+                    {props.title}
+                </h5>
+                <p> 
+                    {props.summary} 
+                </p>
+            </span>
+            <div className={styles.subCardGo}>
+                <span>
+                    <a onClick={props.action}>
+                    <FontAwesomeIcon icon={faArrowRight} /> 
+                    </a>
+                </span>
+            </div>
+            
+        </div>
+    )
+}
+
+const IntroCard = props => {
+    const [curCardTitle, setCurCardTitle] = React.useState('Intro');
+    const [curPath, setPath] = React.useState(['Intro']);
+    
+    const handleContentSwitch = (content) => {
+        var path = [...curPath];
+        if (content === "Intro") {
+            setPath(['Intro']);
+        }
+        else if (path.indexOf(content) === -1) {
+            path.push(content);
+            setPath(path);
+        }
+        
+        setCurCardTitle(content);
+            
+    };
+    
+
+    return (
+    <div className={classNames(styles.content,         
+                                props.colorN === 0 && styles.contentColor,
+                                props.colorN === 1 && styles.contentColorOne,
+                                props.colorN === 2 && styles.contentColorTwo,
+                                props.colorN === 3 && styles.contentColorThree)}>
+        <Path path={curPath} switch={handleContentSwitch}/>
+        <div className={classNames(props.colorN === 0 && styles.cardColor, 
+                                    props.colorN === 1 && styles.cardColorOne,  
+                                    props.colorN === 2 && styles.cardColorTwo,
+                                    props.colorN === 3 && styles.cardColorThree,
+                                    styles.card, props.animate && styles.up)}>
+            <h2>Hi</h2>
+            <hr />
+            <Grid gridMarginX>
+                <Cell small={12} medium={3} large={3} xlarge={3}>
+                    <div className={styles.cardImage}>
+                        <img className ={styles.cardImage}src="https://i.gifer.com/NYRT.gif" alt="intro" ></img>
+                    </div>
+                </Cell>
+                <Cell small={12} medium={9} large={9} xlarge={9}>
+                    <div className={styles.cardText}>
+                        <span>
+                            <p>
+                                My name is Jaime (pronounced like xai-meh). I work with machines, and sometimes machines work with me too. 
+                                If time and GPU permits, I occasionally work on NLP/U and Deep Learning research. Though not particularly 
+                                good at it, I also enjoy writing and generative art.
+                            </p>
+                            <p>
+                                I graduated Columbia University where I studied CS and lots of math. During my time there, I helped build a 
+                                bridge and a water well for an underserved community in Morocco. I also helped kickstart the Medical Informatics 
+                                Society where I hosted machine learning lectures.
+                            </p>
+                            <p>
+                                If you'd like to collaborate on a project, please feel free to reach out. <span>😀</span>
+                            </p>
+        
+                        </span>
+                    </div>
+                </Cell>
+            </Grid>
+        </div>
+    </div>
+    )
+};
+
+const ProjectCard = props => {
+
+    const [curCardTitle, setCurCardTitle] = React.useState('Projects');
+    const [curPath, setPath] = React.useState(['Projects']);
+    
+    const handleContentSwitch = (content) => {
+        var path = [...curPath];
+        if (content === "Projects") {
+            setPath(['Projects']);
+        }
+        else if (path.indexOf(content) === -1) {
+            path.push(content);
+            setPath(path);
+        }
+        
+        setCurCardTitle(content);
+            
+    };
+    
+
     return (
         <div className={classNames(styles.content,         
                                     props.colorN === 0 && styles.contentColor,
                                     props.colorN === 1 && styles.contentColorOne,
                                     props.colorN === 2 && styles.contentColorTwo,
                                     props.colorN === 3 && styles.contentColorThree)}>
+            <Path path={curPath} switch={handleContentSwitch}/>
             <div className={classNames(props.colorN === 0 && styles.cardColor, 
                                         props.colorN === 1 && styles.cardColorOne,  
                                         props.colorN === 2 && styles.cardColorTwo,
                                         props.colorN === 3 && styles.cardColorThree,
                                         styles.card, props.animate && styles.up)}>
-                <h2>Research</h2>
+                <h2>{curCardTitle}</h2>
                 <hr />
                 <Grid>
                     <Cell small={12} medium={12} large={12} xlarge={12}>
-                        <div className={styles.cardText}>
-                            <span>
-                            <hr/>
-                            <hr/>
-                                <h5>
-                                    Text Summarization with Modern Word Embeddings and Pointer-Generator Networks
-   
-                                </h5>
-                                with Andres Talero and Abdullah Siddique
-                                <hr/>
-                                <h6>
-                                    Abstract
-                                </h6>
-                                <p>
-                                    We conduct a performance overview of novel word embedding developments over the past two decades. We apply transfer learning to a text summarization neural network by administering different word embedding types to the network, which uses a combination of extractive and abstractive methods. We describe the differences in training and implementation for different word embedding types and produce a quantitative and qualitative analysis that compares the results produced by each one.
-                                </p>
-                                <hr/>
-                                <h6>
-                                    Results
-                                </h6>
-                                <p>
-                                    Sample Summaries
-                                </p>
-                                
-                                <TextSummary content={textSummaryContentOne}/>
-                                <TextSummary content={textSummaryContentTwo}/>   
-                                <hr/>
-                            </span>
-                            <br/>
-                            <br/>
-                            <hr/>
-                            <hr/>
+                        <CardBody content={curCardTitle} switch={handleContentSwitch}/>
+                    </Cell>
+                </Grid>
+            </div>
+        </div>
+    )
+};
 
-                            <span>                         
-                            <h5> 
-                                Deep Learning Resource Analysis Using Memory-Efficient Adaptive Optimization
-                            </h5>
-                            with Rahul Das and Zhixiang Hu
-                            <hr/>
-                            <h6>
-                                Abstract
-                            </h6>
-                            <p>
-                            The use of adaptive gradient-based optimizers is widespread in machine learning, the most popular of which are Adam, Adagrad, and Adafactor. These optimizers utilize cumulative second-order statistics to tune the learning rate of each parameter during the optimization process, presenting numerous advantages, most importantly, constraining the time and space requirements of the methods to be linear in the number of parameters.
-However, the existing optimizers still present significant memory overhead when training models with billions of parameters. This places a limitation on the size of the model and on the batch size during training, which can severely effect the accuracy of the model. By improving on the memory overhead of existing optimizers, we can train ever more complex and accurate models, which is especially pertinent to the field of natural language processing. Anil et al. [2] present a novel adaptive optimization method which retains the benefits of conventional per-parameter adaptivity while significantly reducing memory requirements.
-                            </p>
-                            <hr/>
-                            <h6>
-                                Background
-                            </h6>
-                                <MathJax.Provider input="tex">
-                                    <div>
-                                        <b><u>SM3-II Algorithm</u></b>
-                                        <br/>
-                                        1: <b>parameters:</b> learning rate <MathJax.Node inline formula={'\\eta'}/>
-                                        <br/>
-                                        2: initialize <MathJax.Node inline formula={'w_1 = 0 ; \\forall r \\in [k] : \\mu\'_0(r) = 0'}/>
-                                        <br/>
-                                        3: <b>for</b> <MathJax.Node inline formula={'t = 1, \\cdots, T'}/> <b>do</b>
-                                        <br/>
-                                        4: &nbsp;&nbsp;&nbsp;&nbsp;receive gradient <MathJax.Node inline formula={'g_t = \\nabla \\ell_t(w_t)'}/>
-                                        <br/>
-                                        5: &nbsp;&nbsp;&nbsp;&nbsp;initialize <MathJax.Node inline formula={'\\forall r \\in [k] : \\mu\'_t(r) = 0'}/>
-                                        <br/>
-                                        6: &nbsp;&nbsp;&nbsp;&nbsp;<b>for</b> <MathJax.Node inline formula={'i=1,\\cdots,d'}/> <b>do</b>
-                                        <br/>
-                                        7: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<MathJax.Node inline formula={'\\nu\'_t(i) \\leftarrow \\min_{r:S_r\\ni i}\\mu\'_{t-1}(r) + g_t^2(i)'}/>
-                                        <br/>
-                                        8: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<MathJax.Node inline formula={'w\'_{t+1}(i) \\leftarrow w_t(i) - \\eta g_t(i) / \\sqrt{\\nu\'_t(i)}'}/>
-                                        <br/>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<MathJax.Node inline formula={'\\triangleright'}/> with the convention that <MathJax.Node inline formula={'0/0 = 0'}/>
-                                        <br />
-                                        9: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>for</b> all <MathJax.Node inline formula={'r: S_r \\ni i'}/> <b>do</b>
-                                        <br/>
-                                        10: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<MathJax.Node inline formula={'\\mu\'_t(r) \\leftarrow \\max\\{\\mu\'_t(r),\\nu\'_t(i)\\}'}/>
-                                    </div>
-                                </MathJax.Provider>
-                            <hr/>
-                            <h6>
-                                Results
-                            </h6>
-                            </span>
-                        </div>
+const ResearchCard = props => {
+
+    const [curCardTitle, setCurCardTitle] = React.useState('Research');
+    const [curPath, setPath] = React.useState(['Research']);
+
+    const handleContentSwitch = (content) => {
+        var path = [...curPath];
+        if (content === "Research") {
+            setPath(['Research']);
+        }
+        else if (path.indexOf(content) === -1) {
+            path.push(content);
+            setPath(path);
+        }
+        
+        setCurCardTitle(content);
+            
+    };
+
+    return (
+        <div className={classNames(styles.content,         
+                                    props.colorN === 0 && styles.contentColor,
+                                    props.colorN === 1 && styles.contentColorOne,
+                                    props.colorN === 2 && styles.contentColorTwo,
+                                    props.colorN === 3 && styles.contentColorThree)}>
+            <Path path={curPath} switch={handleContentSwitch}/>
+            <div className={classNames(props.colorN === 0 && styles.cardColor, 
+                                        props.colorN === 1 && styles.cardColorOne,  
+                                        props.colorN === 2 && styles.cardColorTwo,
+                                        props.colorN === 3 && styles.cardColorThree,
+                                        styles.card, props.animate && styles.up)}>
+                <h2>{curCardTitle}</h2>
+                <hr />
+                <Grid>
+                    <Cell small={12} medium={12} large={12} xlarge={12}>
+                        <CardBody content={curCardTitle} switch={handleContentSwitch}/>
                     </Cell>
                 </Grid>
             </div>
@@ -599,5 +759,32 @@ const TextSummary = props => {
         </div>
     );
 };
+
+function GetWinSize() {
+    const isClient = typeof window === 'object';
+
+    function getSize() {
+        return {
+            width: isClient ? window.innerWidth : undefined,
+            height: isClient ? window.innerHeight : undefined
+        };
+    }
+
+    const [windowSize, setWindowSize] = React.useState(getSize());
+
+    useEffect(() => {
+        if (!isClient) {
+            return false;
+        }
+        function handleResize() {
+            setWindowSize(getSize());
+        }
+        
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    return windowSize;
+}
 
 export default App;
